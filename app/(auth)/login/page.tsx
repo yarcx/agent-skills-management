@@ -17,12 +17,12 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Redirect if already authenticated
-  if (!isLoading && isAuthenticated) {
-    router.push("/dashboard");
-  }
-
-
+  useEffect(() => {
+    // Redirect if already authenticated
+    if (!isLoading && isAuthenticated) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, isLoading, router]);
   useEffect(() => {
     fetchUserSkills();
   }, []);

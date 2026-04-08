@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-    console.log({email, password}, '==== got here ====')
     // Find user
     const user = await prisma.user.findUnique({
       where: { email },

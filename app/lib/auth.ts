@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 const SALT_ROUNDS = 10;
 const TOKEN_EXPIRY_HOURS = parseInt(process.env.AUTH_TOKEN_EXPIRY_HOURS || "24");
@@ -46,7 +47,8 @@ export function generateToken(user: {
     exp: Date.now() + TOKEN_EXPIRY_HOURS * 60 * 60 * 1000,
   };
 
-  return Buffer.from(JSON.stringify(payload)).toString("base64");
+  // return Buffer.from(JSON.stringify(payload)).toString("base64");
+  return jwt.sign(payload, process.env.JWT_SECRET!);
 }
 
 /**
@@ -54,9 +56,7 @@ export function generateToken(user: {
  */
 export function verifyToken(token: string): TokenPayload | null {
   try {
-    const payload = JSON.parse(
-      Buffer.from(token, "base64").toString("utf-8")
-    ) as TokenPayload;
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as TokenPayload;
 
     // Check expiration
     if (payload.exp < Date.now()) {
