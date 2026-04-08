@@ -1,9 +1,9 @@
-datasource db {
-  provider = "mysql"
-}
-
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
 }
 
 model User {
@@ -25,9 +25,10 @@ model Skill {
   content     String   @db.Text
   isPublic    Boolean  @default(true) @map("is_public")
   authorId    Int      @map("author_id")
-  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
+  @@index([authorId], map: "skills_author_id_fkey")
   @@map("skills")
 }

@@ -18,6 +18,7 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
   // Redirect if already authenticated
   if (!isLoading && isAuthenticated) {
@@ -95,10 +96,10 @@ export default function RegisterPage() {
 
         <div className="form-control mt-4">
           <label className="label">
-            <span className="label-text">Password</span>
+            <span className="label-text">Password</span> <button onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Hide" : "Show"}</button>
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="••••••••"
             className="input input-bordered w-full"
             value={password}
@@ -110,10 +111,10 @@ export default function RegisterPage() {
 
         <div className="form-control mt-4">
           <label className="label">
-            <span className="label-text">Confirm Password</span>
+            <span className="label-text">Confirm Password</span> <button onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Hide" : "Show"}</button>
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="••••••••"
             className="input input-bordered w-full"
             value={confirmPassword}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
@@ -20,8 +20,30 @@ export default function LoginPage() {
   // Redirect if already authenticated
   if (!isLoading && isAuthenticated) {
     router.push("/dashboard");
-    return null;
   }
+
+
+  useEffect(() => {
+    fetchUserSkills();
+  }, []);
+
+  const fetchUserSkills = async () => {
+    try {
+      // Cookies are automatically sent with fetch
+      const response = await fetch("/api/skills", {
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.skills || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch skills:", error);
+    } finally {
+    }
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
